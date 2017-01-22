@@ -39,6 +39,7 @@
 #endif
 #if defined(TARGET_ANDROID)
 #include "Video/DVDVideoCodecAndroidMediaCodec.h"
+#include "Audio/DVDAudioCodecAndroidMediaCodec.h"
 #include "platform/android/activity/AndroidFeatures.h"
 #endif
 #include "Audio/DVDAudioCodecFFmpeg.h"
@@ -180,6 +181,12 @@ CDVDAudioCodec* CDVDFactoryCodec::CreateAudioCodec(CDVDStreamInfo &hint, CProces
 
   if (!allowdtshddecode)
     options.m_keys.push_back(CDVDCodecOption("allowdtshddecode", "0"));
+
+#if defined(TARGET_ANDROID)
+  pCodec = OpenCodec(new CDVDAudioCodecAndroidMediaCodec(processInfo), hint, options);
+  if (pCodec)
+    return pCodec;
+#endif
 
   // we don't use passthrough if "sync playback to display" is enabled
   if (allowpassthrough)
