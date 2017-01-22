@@ -323,6 +323,13 @@ std::vector<CJNIMediaCodecInfoCodecProfileLevel> CJNIMediaCodecInfoCodecCapabili
   return profileLevels;
 }
 
+bool CJNIMediaCodecInfoCodecCapabilities::isFeatureSupported(const std::string &feature) const
+{
+  return call_method<jboolean>(m_object,
+    "isFeatureSupported", "(Ljava/lang/String;)Z",
+    jcast<jhstring>(feature));
+}
+
 /**********************************************************************************/
 /**********************************************************************************/
 std::string CJNIMediaCodecInfo::getName() const

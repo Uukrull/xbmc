@@ -39,6 +39,7 @@ class CJNIMediaCodec;
 class CJNIMediaFormat;
 class CDVDMediaCodecOnFrameAvailable;
 class CJNIByteBuffer;
+class CJNIMediaCrypto;
 class CBitstreamConverter;
 
 typedef struct amc_demux {
@@ -110,7 +111,8 @@ public:
   virtual double  GetTimeSize(void);
   virtual const char* GetName(void) { return m_formatname.c_str(); }
   virtual unsigned GetAllowedReferences();
-
+  virtual bool IsOpen() { return m_opened; };
+  virtual void Reopen();
 protected:
   void            Dispose();
   void            FlushInternal(void);
@@ -137,10 +139,12 @@ protected:
   CJNISurface    *m_surface;
   unsigned int    m_textureId;
   CJNISurface     m_videosurface;
+
   // we need these as shared_ptr because CDVDVideoCodecAndroidMediaCodec
   // will get deleted before CLinuxRendererGLES is shut down and
   // CLinuxRendererGLES refs them via CDVDMediaCodecInfo.
   std::shared_ptr<CJNIMediaCodec> m_codec;
+  std::shared_ptr<CJNIMediaCrypto> m_crypto;
   std::shared_ptr<CJNISurfaceTexture> m_surfaceTexture;
   std::shared_ptr<CDVDMediaCodecOnFrameAvailable> m_frameAvailable;
 

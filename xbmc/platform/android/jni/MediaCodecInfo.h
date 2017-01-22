@@ -130,6 +130,7 @@ class CJNIMediaCodecInfoCodecCapabilities : public CJNIBase
 public:
   CJNIMediaCodecInfoCodecCapabilities(const jni::jhobject &object) : CJNIBase(object) {};
   //~CJNIMediaCodecInfoCodecCapabilities() {};
+  bool isFeatureSupported(const std::string &feature) const;
 
   std::vector<int> colorFormats() const;
   std::vector<CJNIMediaCodecInfoCodecProfileLevel> profileLevels() const;
